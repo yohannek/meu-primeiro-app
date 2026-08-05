@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
-selector: "app-produto",
-imports: [],
-templateUrl: "./produto.html",
-styleUrl: './produto.css',
+  selector: 'app-produto',
+  imports: [CurrencyPipe],
+  templateUrl: './produto.html',
+  styleUrl: './produto.css',
 })
+
 export class Produto {
-nome = 'Produto Exemplo';
-preco = 149.99;
+  @Input() nome: string = '';
+  @Input() preco: number = 0;
+  @Output() produtoSelecionado = new EventEmitter<string>();
+
+  selecionarProduto() {
+    this.produtoSelecionado.emit(this.nome);
+  }
 }
