@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Produto } from '../produto/produto';
 
 @Component({
@@ -8,13 +8,20 @@ import { Produto } from '../produto/produto';
   styleUrl: './lista-produtos.css',
 })
 export class ListaProdutos {
-  produtos = [
+  produtos = signal([
     { nome: 'Notebook', preco: 3800 },
     { nome: 'Mouse', preco: 179 },
-    { nome: 'Caixa de som', preco: 500 },
-  ];
+    { nome: 'Caixa de Som', preco: 500 },
+  ]);
 
   exibirProduto(nome: string) {
     console.log('Produto selecionado:', nome);
   }
+adicionarProduto() {
+this.produtos.update(listaAtual => [
+...listaAtual,
+{ nome: 'Teclado', preco: 250 },
+{ nome: 'Batom', preco: 10 },
+]);
+}
 }
