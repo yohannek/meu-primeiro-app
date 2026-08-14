@@ -38,6 +38,8 @@
 
     carrinho = signal<{ nome: string; preco: number }[]>([]);
 
+    erro = signal<string | null>(null);
+
     // COMPUTED
 
     totalProdutos = computed(() => this.produtos().length);
@@ -69,8 +71,8 @@
     }
 
     carregarProdutos() {
-    this.carregando.set(true);
-
+    this.erro.set(null); // limpa erro anterior
+    this.carregando.set(true); // ativa loading
     this.produtosService.buscarProdutos().subscribe({
       next: (dados) => {
         const produtos = this.produtosService.transformarProdutos(dados);
@@ -79,6 +81,7 @@
       },
       error: (erro) => {
         console.error('Erro ao carregar produtos:', erro);
+        this.erro.set('Erro ao carregar produtos. Verifique sua conexão e tente novamente.');
         this.carregando.set(false);
       },
     });

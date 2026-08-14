@@ -6,17 +6,20 @@
       <p>Carregando produtos...</p>
     }
 
-    @if (!carregando()) {
-      @for (item of produtos(); track item.nome) {
-        <app-produto
-          [nome]="item.nome"
-          [preco]="item.preco"
-          (produtoSelecionado)="exibirProduto($event)"
-        ></app-produto>
+    @if (erro()) {
+    <p style="color: red">
+      {{ erro() }}
+    </p>
+    <button (click)="carregarProdutos()">Tentar novamente</button>
+  }
 
-        <button (click)="adicionarAoCarrinho(item)">Adicionar ao Carrinho</button>
-      }
+  @if (!carregando() && !erro()) {
+    <p>Total de produtos: {{ totalProdutos() }}</p>
+    <hr />
+    @for (item of produtos(); track $index) {
+      <app-produto [nome]="item.nome" [preco]="item.preco" />
     }
+  }
 
     <h2>
       Produto selecionado:
