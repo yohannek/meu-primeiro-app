@@ -1,7 +1,10 @@
-mat-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+ mat-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  button {
+    margin-left: 8px;
   }
 
   .flex-spacer {
