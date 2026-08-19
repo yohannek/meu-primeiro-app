@@ -1,5 +1,51 @@
-<h2>Área Administrativa</h2>
+<section class="painel-admin">
+  <h2>Área Administrativa</h2>
+  <p>Esta página representa uma área restrita da aplicação.</p>
+  <p>Somente usuários com perfil de administrador conseguem acessar esta rota.</p>
 
-<p>Esta página representa uma área restrita da aplicação.</p>
+  <hr />
+  <section class="bloco-admin">
+    <h3>Usuário autenticado</h3>
 
-<p>Somente usuários com perfil de administrador devem conseguir acessar esta rota.</p>
+    @if (usuarioAtual()) {
+      <p><strong>E-mail:</strong> {{ usuarioAtual()?.email }}</p>
+      <p><strong>Perfil:</strong> {{ usuarioAtual()?.perfil }}</p>
+      <p>{{ mensagemPerfil() }}</p>
+    }
+  </section>
+
+  <hr />
+  <section class="cards-admin">
+    <article>
+      <h3>Produtos cadastrados</h3>
+      <p>{{ totalProdutosCadastrados() }}</p>
+    </article>
+    <article>
+      <h3>Pedidos pendentes</h3>
+      <p>{{ pedidosPendentes() }}</p>
+    </article>
+    <article>
+      <h3>Usuários cadastrados</h3>
+      <p>{{ usuariosCadastrados() }}</p>
+    </article>
+  </section>
+
+  <hr />
+
+  <section class="bloco-admin">
+    <h3>Ações administrativas simuladas</h3>
+
+    <p>
+      Nesta etapa do curso, estas ações ainda são apenas representativas. Nas próximas evoluções,
+      poderiam ser conectadas a APIs reais.
+    </p>
+
+    <button type="button">Cadastrar produto</button>
+    <button type="button">Gerenciar pedidos</button>
+    <button type="button">Gerenciar usuários</button>
+  </section>
+
+  <hr />
+
+  <button type="button" (click)="sair()">Sair da conta administrativa</button>
+</section>
