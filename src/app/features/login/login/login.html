@@ -4,11 +4,11 @@
 
 <section class="dica-login">
   <h3>Usuários para teste</h3>
-
+  
   <p><strong>Administrador:</strong> admin@email.com</p>
-
+  
   <p><strong>Usuário comum:</strong> qualquer outro e-mail válido.</p>
-
+  
   <p>A senha precisa ter pelo menos 3 caracteres.</p>
 </section>
 
@@ -17,10 +17,8 @@
 }
 
 <form [formGroup]="formulario">
-  <p>
-    <input type="email" formControlName="email" placeholder="E-mail" />
-  </p>
-
+  <p><input type="email" formControlName="email" placeholder="E-mail" /></p>
+  
   @if (formulario.get('email')?.touched && formulario.get('email')?.invalid) {
     @if (formulario.get('email')?.errors?.['required']) {
       <small>E-mail é obrigatório</small>
@@ -31,10 +29,8 @@
     }
   }
 
-  <p>
-    <input type="password" formControlName="senha" placeholder="Senha" />
-  </p>
-
+  <p><input type="password" formControlName="senha" placeholder="Senha" /></p>
+  
   @if (formulario.get('senha')?.touched && formulario.get('senha')?.invalid) {
     @if (formulario.get('senha')?.errors?.['required']) {
       <small>Senha é obrigatória</small>
@@ -45,7 +41,7 @@
     }
   }
 
-  <p>
-    <button type="button" (click)="entrar()" [disabled]="formulario.invalid">Entrar</button>
+  <p><button type="button" (click)="entrar()" [disabled]="formulario.invalid">
+    Entrar</button>
   </p>
 </form>
