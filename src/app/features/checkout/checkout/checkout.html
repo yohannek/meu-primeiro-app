@@ -1,12 +1,19 @@
 <h2>Checkout</h2>
-@if (compraFinalizada()) {
-  <p style="color: green">Compra finalizada com sucesso!</p>
-  <button type="button" routerLink="/produtos">Voltar aos produtos</button>
+@if (pedidoFinalizado()) {
+  <section>
+    <h3 style="color: green">Compra finalizada com sucesso!</h3>
+    <p><strong>Código do pedido:</strong> {{ pedidoFinalizado()?.codigo }}</p>
+    <p><strong>Cliente:</strong> {{ pedidoFinalizado()?.cliente }}</p>
+    <p><strong>Itens comprados:</strong> {{ pedidoFinalizado()?.quantidadeItens }}</p>
+    <p><strong>Total:</strong> R$ {{ pedidoFinalizado()?.total?.toFixed(2) }}</p>
+    <button type="button" routerLink="/produtos">Fazer nova compra</button>
+  </section>
 }
-@if (carrinhoFacade.carrinhoVazio() && !compraFinalizada()) {
+
+@if (carrinhoFacade.carrinhoVazio() && !pedidoFinalizado()) {
   <p style="color: red">Seu carrinho está vazio. Adicione produtos antes de finalizar a compra.</p>
   <button type="button" routerLink="/produtos">Ver produtos</button>
-} @else if (!compraFinalizada()) {
+} @else if (!pedidoFinalizado()) {
   <section>
     <h3>Resumo do pedido</h3>
     <p>Itens no carrinho: {{ carrinhoFacade.quantidade() }}</p>
@@ -18,7 +25,6 @@
     <p>
       <input type="text" formControlName="nome" placeholder="Nome" />
     </p>
-    
     @if (formulario.get('nome')?.touched && formulario.get('nome')?.invalid) {
       @if (formulario.get('nome')?.errors?.['required']) {
         <small>Nome é obrigatório</small>

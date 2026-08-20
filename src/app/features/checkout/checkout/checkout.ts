@@ -1,25 +1,33 @@
 import { Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  ReactiveFormsModule,
   ValidationErrors,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
+
+type PedidoFinalizado = {
+  codigo: number;
+  cliente: string;
+  quantidadeItens: number;
+  total: number;
+  itens: ItemCarrinho[];
+};
 
 function nomeSemNumeros(control: AbstractControl): ValidationErrors | null {
   const valor = control.value;
-  
+
   if (!valor) return null;
-  
+
   if (/\d/.test(valor)) {
     return { numeroInvalido: true };
   }
-
   return null;
 }
 
@@ -30,10 +38,10 @@ function nomeSemNumeros(control: AbstractControl): ValidationErrors | null {
   styleUrl: './checkout.css',
 })
 export class Checkout {
-  // Checkout usa a facade apenas para ler resumo, validar carrinho vazio e limpar após compra.
   carrinhoFacade = inject(CarrinhoFacade);
 
-  compraFinalizada = signal(false);
+  //compraFinalizada = signal(false);
+  pedidoFinalizado = signal<PedidoFinalizado | null>(null);
 
   formulario = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(3), nomeSemNumeros]),
@@ -42,7 +50,7 @@ export class Checkout {
   });
 
   finalizar() {
-    this.compraFinalizada.set(false);
+    this.pedidoFinalizado.set(null);
 
     if (this.carrinhoFacade.carrinhoVazio()) {
       console.log('Não é possível finalizar uma compra com o carrinho vazio.');
@@ -59,15 +67,20 @@ export class Checkout {
     const itens = this.carrinhoFacade.itens();
     const total = this.carrinhoFacade.total();
 
-    console.log('Compra finalizada com sucesso!');
-    console.log('Dados do formulário:', dados);
-    console.log('Itens do carrinho:', itens);
-    console.log('Total da compra:', total);
+    const pedido: PedidoFinalizado = {
+      codigo: Date.now(),
+      cliente: dados.nome ?? '',
+      quantidadeItens: itens.length,
+      total,
+      itens,
+    };
 
-    // Após finalizar, o carrinho global é limpo.
+    console.log('Compra finalizada com sucesso!');
+    console.log('Pedido:', pedido);
+    console.log('Dados do formulário:', dados);
+
     this.carrinhoFacade.limparCarrinho();
-    
     this.formulario.reset();
-    this.compraFinalizada.set(true);
+    this.pedidoFinalizado.set(pedido);
   }
 }
