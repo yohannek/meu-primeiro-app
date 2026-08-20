@@ -1,46 +1,37 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ProdutosService } from '../../../core/services/produtos.service';
-import { ItemCarrinho } from '../../../core/models/item-carrinho';
+import { RouterLink } from '@angular/router';
+
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
 import { Produto } from '../produto/produto';
+import { ProdutoLoja } from '../../../core/models/produto.loja';
+import { ProdutosService } from '../../../core/services/produtos.service';
 
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto, MatButtonModule],
+  imports: [Produto, MatButtonModule, RouterLink],
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
 export class ListaProdutos {
-  // INJECTS
-  produtosService = inject(ProdutosService);
+  private produtosService = inject(ProdutosService);
   carrinhoFacade = inject(CarrinhoFacade);
 
-  quantidadeCarrinho = this.carrinhoFacade.quantidade;
-  totalCarrinho = this.carrinhoFacade.total;
-
-  // === SIGNALS
-  produtos = signal<{ nome: string; preco: number }[]>([]);
+  produtos = signal<ProdutoLoja[]>([]);
   produtoSelecionado = signal<string | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
-  // === COMPUTED
   totalProdutos = computed(() => this.produtos().length);
 
-  valorTotal = computed(() => {
-    return this.produtos().reduce((total, item) => total + item.preco, 0);
-  });
+  valorTotal = computed(() => this.produtos().reduce((total, item) => total + item.preco, 0));
 
-  // === CONSTRUTOR
+  valorTotalFormatado = computed(() => this.valorTotal().toFixed(2));
+
   constructor() {
     this.carregarProdutos();
-    effect(() => {
-      console.log('Lista de produtos alterada:', this.produtos());
-    });
-    effect(() => {
-      console.log('Valor total atualizado:', this.valorTotal());
-    });
+
     effect(() => {
       if (typeof document !== 'undefined') {
         document.title = `(${this.totalProdutos()}) Minha Loja`;
@@ -48,11 +39,9 @@ export class ListaProdutos {
     });
   }
 
-  // === MÉTODO HTTP (API)
   carregarProdutos() {
-    this.erro.set(null);
-    this.carregando.set(true);
-
+    this.erro.set(null); // limpa erro anterior
+    this.carregando.set(true); // ativa loading
     this.produtosService.buscarProdutos().subscribe({
       next: (dados) => {
         const produtos = this.produtosService.transformarProdutos(dados);
@@ -67,17 +56,8 @@ export class ListaProdutos {
     });
   }
 
-  // === DEMAIS MÉTODOS
   exibirProduto(nome: string) {
     this.produtoSelecionado.set(nome);
-  }
-
-  adicionarProduto() {
-    this.produtos.update((listaAtual) => [...listaAtual, { nome: 'Teclado', preco: 250 }]);
-  }
-
-  substituirProdutos() {
-    this.produtos.set([{ nome: 'Produto novo', preco: 999 }]);
   }
 
   adicionarAoCarrinho(produto: ItemCarrinho) {

@@ -1,0 +1,36 @@
+.pagina-carrinho {
+  max-width: 800px;
+}
+
+.lista-carrinho {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+}
+.item-carrinho h3 {
+  margin: 0 0 4px;
+}
+
+.item-carrinho p {
+  margin: 0;
+}
+
+.resumo-carrinho {
+  margin: 16px 0;
+}
+
+.acoes-carrinho {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -1,17 +1,68 @@
+.pagina-produtos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cabecalho-produtos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cabecalho-produtos h2 {
+  margin-bottom: 4px;
+}
+
+.resumo-produtos {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fafafa;
+}
+
 .grid-produtos {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.mensagem-erro {
+  border: 1px solid #f3b7b7;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fff5f5;
+}
+
+.produto-selecionado {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.texto-sucesso {
+  color: green;
+  font-weight: bold;
+}
+
+.texto-neutro {
+  color: gray;
+}
+
+@media (min-width: 700px) {
+  .cabecalho-produtos {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  @media (min-width: 600px) {
-    .grid-produtos {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .grid-produtos {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  @media (min-width: 900px) {
-    .grid-produtos {
-      grid-template-columns: repeat(3, 1fr);
-    }
+@media (min-width: 1000px) {
+  .grid-produtos {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
