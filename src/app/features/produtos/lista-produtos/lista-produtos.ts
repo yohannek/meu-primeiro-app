@@ -1,6 +1,7 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ProdutosService } from '../../../core/services/produtos.service';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 import { Produto } from '../produto/produto';
 
@@ -79,7 +80,7 @@ export class ListaProdutos {
     this.produtos.set([{ nome: 'Produto novo', preco: 999 }]);
   }
 
-  adicionarAoCarrinho(produto: { nome: string; preco: number }) {
+  adicionarAoCarrinho(produto: ItemCarrinho) {
     this.carrinhoFacade.adicionarProduto(produto);
   }
 }
